@@ -1,57 +1,37 @@
 <script>
-	import Header from './Header.svelte';
-	import '../app.css';
+	import '$lib/css/tailwind.css';
+	import '$lib/css/main.css';
+
+	import { page } from '$app/stores';
+	import { derived } from 'svelte/store';
+	import Navigation from '$lib/components/Navigation.svelte';
+	import { PUBLIC_GITHUB_USERNAME } from '$env/static/public';
 
 	let { children } = $props();
+
+	const canonicalUrl = derived(page, ($page) => {
+		// Ex : https://username.github.io/#/path
+		// Remplace '/' au début
+		const path = $page.url.pathname.replace(/^\//, '');
+		return `https://${PUBLIC_GITHUB_USERNAME}.github.io/${path}`;
+	});
 </script>
 
+<svelte:head>
+	<link rel="canonical" href={$canonicalUrl} />
+	<meta property="og:url" content={$canonicalUrl} />
+</svelte:head>
+
 <div class="app">
-	<Header />
-
-	<main>
-		{@render children()}
-	</main>
-
-	<footer>
-		<p>
-			visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to learn about SvelteKit
-		</p>
-	</footer>
+	<Navigation username={PUBLIC_GITHUB_USERNAME} />
+	<div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+		<div
+			class="gh-bg-secondary mb-8 rounded-2xl border p-6 sm:p-8"
+			style="border: 1px solid var(--gh-border)"
+		>
+			<main>
+				{@render children()}
+			</main>
+		</div>
+	</div>
 </div>
-
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
-</style>

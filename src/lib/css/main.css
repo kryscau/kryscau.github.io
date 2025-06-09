@@ -1,0 +1,105 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+#username::first-letter {
+	text-transform: capitalize !important;
+}
+
+:root {
+	--gh-bg: #0d1117;
+	--gh-bg-secondary: #161b22;
+	--gh-bg-tertiary: #21262d;
+	--gh-border: #30363d;
+	--gh-border-muted: #21262d;
+	--gh-text: #f0f6fc;
+	--gh-text-secondary: #7d8590;
+	--gh-text-muted: #656d76;
+	--gh-accent: #58a6ff;
+	--gh-accent-emphasis: #1f6feb;
+	--gh-success: #3fb950;
+	--gh-attention: #d29922;
+	--gh-severe: #db6d28;
+	--gh-danger: #f85149;
+}
+
+.gh-bg {
+	background-color: var(--gh-bg);
+}
+.gh-bg-secondary {
+	background-color: var(--gh-bg-secondary);
+}
+.gh-bg-tertiary {
+	background-color: var(--gh-bg-tertiary);
+}
+.gh-border {
+	border-color: var(--gh-border);
+}
+.gh-border-muted {
+	border-color: var(--gh-border-muted);
+}
+.gh-text {
+	color: var(--gh-text);
+}
+.gh-text-secondary {
+	color: var(--gh-text-secondary);
+}
+.gh-text-muted {
+	color: var(--gh-text-muted);
+}
+.gh-accent {
+	color: var(--gh-accent);
+}
+.gh-accent-emphasis {
+	color: var(--gh-accent-emphasis);
+}
+.gh-success {
+	color: var(--gh-success);
+}
+.gh-attention {
+	color: var(--gh-attention);
+}
+.gh-danger {
+	color: var(--gh-danger);
+}
+
+.bg-gh-accent {
+	background-color: var(--gh-accent);
+}
+.bg-gh-accent-emphasis {
+	background-color: var(--gh-accent-emphasis);
+}
+.bg-gh-success {
+	background-color: var(--gh-success);
+}
+.bg-gh-attention {
+	background-color: var(--gh-attention);
+}
+.bg-gh-danger {
+	background-color: var(--gh-danger);
+}
+
+.border-gh-accent {
+	border-color: var(--gh-accent);
+}
+.border-gh-success {
+	border-color: var(--gh-success);
+}
+.border-gh-attention {
+	border-color: var(--gh-attention);
+}
+.border-gh-danger {
+	border-color: var(--gh-danger);
+}
+
+.hover\:border-gh-accent:hover {
+	border-color: var(--gh-accent);
+}
+.hover\:bg-gh-accent:hover {
+	background-color: var(--gh-accent);
+}
+.hover\:bg-gh-accent-emphasis:hover {
+	background-color: var(--gh-accent-emphasis);
+}
+
+body {
+	background-color: var(--gh-bg);
+	color: var(--gh-text);
+}

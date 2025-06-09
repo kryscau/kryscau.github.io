@@ -1,59 +1,91 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcomeFallback from '$lib/images/svelte-welcome.png';
+	// @ts-nocheck
+
+	import MetaSeo from '$lib/components/MetaSEO.svelte';
+	import ProfileSection from '$lib/components/ProfileSection.svelte';
+	import RepositorySection from '$lib/components/RepositorySection.svelte';
+	import { PUBLIC_GITHUB_USERNAME, PUBLIC_GITHUB_API_URL } from '$env/static/public';
+	import { onMount } from 'svelte';
+
+	let user = {
+		nickname: PUBLIC_GITHUB_USERNAME,
+		username: PUBLIC_GITHUB_USERNAME,
+		bio: '',
+		location: '',
+		blog: '',
+		company: '',
+		avatarUrl: '/assets/img/placeholder.jpg',
+		stats: { repositories: 0, followers: 0, following: 0 }
+	};
+
+	let repositories = [];
+
+	onMount(async () => {
+		const BASE_URL = PUBLIC_GITHUB_API_URL;
+		const USERNAME = PUBLIC_GITHUB_USERNAME;
+
+		try {
+			// Appel public pour récupérer les infos du user
+			const userResponse = await fetch(`${BASE_URL}/users/${USERNAME}`);
+			if (!userResponse.ok) throw new Error('Error recovering user data');
+			const userData = await userResponse.json();
+
+			user.nickname = userData.name || userData.login[0].toUpperCase() + userData.login.slice(1);
+			user.username = userData.login;
+			user.avatarUrl = userData.avatar_url;
+			user.stats = {
+				repositories: userData.public_repos,
+				followers: userData.followers,
+				following: userData.following
+			};
+			user.bio = userData.bio;
+			user.location = userData.location;
+			user.blog = userData.blog;
+			user.company = userData.company;
+
+			// Appel public pour récupérer les repos
+			const reposResponse = await fetch(`${BASE_URL}/users/${USERNAME}/repos?per_page=100`);
+			if (!reposResponse.ok) throw new Error('Error retrieving repositories');
+			const reposData = await reposResponse.json();
+
+			repositories = reposData.filter(
+				(/** @type {{ name: string; description: string; }} */ repo) => {
+					const forbiddenNames = ['.github', 'DiscussionsHost'];
+					const hasForbiddenWordInName = ['demo', 'backup', 'test', 'old'].some((word) =>
+						repo.name.toLowerCase().includes(word)
+					);
+					const hasForbiddenDescription =
+						repo.description && repo.description.toLowerCase().includes('just a redirect');
+
+					return (
+						!forbiddenNames.includes(repo.name) &&
+						!hasForbiddenWordInName &&
+						!hasForbiddenDescription
+					);
+				}
+			);
+
+			console.log(repositories);
+		} catch (error) {
+			console.error('Error retrieving GitHub data:', error);
+		}
+	});
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+<MetaSeo
+	title={`Repositories — ${user.nickname} (@${user.username})`}
+	description={`Discover all the GitHub Repositories and primary statistics for ${user.nickname} (@${user.username}) on this page.`}
+/>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcomeFallback} alt="Welcome" />
-			</picture>
-		</span>
+<ProfileSection
+	nickname={user.nickname}
+	username={user.username}
+	avatarUrl={user.avatarUrl}
+	stats={user.stats}
+	bio={user.bio}
+	location={user.location}
+	blog={user.blog}
+	company={user.company}
+/>
 
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
+<RepositorySection {repositories} />

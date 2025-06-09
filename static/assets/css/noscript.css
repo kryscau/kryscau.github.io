@@ -1,0 +1,17 @@
+.noscript-message {
+  text-align: center;
+}
+
+.noscript-message h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.noscript-message p {
+  font-size: 1rem;
+}
+
+.noscript-message a {
+  color: #3b82f6;
+  text-decoration: none;
+}
