@@ -24,6 +24,7 @@
 	import { onMount } from 'svelte';
 	import LangBadge from '$lib/components/ui/LangBadge.svelte'; // adapte selon ton dossier
 	import { formatDistanceToNow } from 'date-fns';
+	import MetaSeo from '$lib/components/MetaSEO.svelte';
 
 	let dataRepo = {
 		repository: null,
@@ -80,7 +81,15 @@
 	onMount(() => {
 		fetchData();
 	});
+
+	const formattedUsername = username.charAt(0).toUpperCase() + username.slice(1).toLowerCase();
+	const formattedRepository = repo.charAt(0).toUpperCase() + repo.slice(1).toLowerCase();
 </script>
+
+<MetaSeo
+	title={`${formattedRepository} — Repository Details - ${formattedUsername} (@${username})`}
+	description={`Explore the ${formattedUsername}/${formattedRepository} repository on GitHub. Discover its features, contributors, and more.`}
+/>
 
 {#if error}
 	<div class="mb-6 rounded bg-red-600 p-4 text-white">
