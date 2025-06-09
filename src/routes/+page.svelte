@@ -1,5 +1,6 @@
 <script>
 	// @ts-nocheck
+	export const prerender = true;
 
 	import MetaSeo from '$lib/components/MetaSEO.svelte';
 	import ProfileSection from '$lib/components/ProfileSection.svelte';
