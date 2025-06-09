@@ -1,7 +1,5 @@
 <script>
 	// @ts-nocheck
-	export const prerender = true;
-
 	import { PUBLIC_GITHUB_API_URL } from '$env/static/public';
 	import { page } from '$app/stores';
 	import { onDestroy } from 'svelte';
