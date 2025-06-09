@@ -24,9 +24,9 @@
 		const USERNAME = PUBLIC_GITHUB_USERNAME;
 
 		try {
-			// Appel public pour récupérer les infos du user
 			const userResponse = await fetch(`${BASE_URL}/users/${USERNAME}`);
-			if (!userResponse.ok) throw new Error('Error recovering user data');
+			if (!userResponse.ok)
+				throw new Error(`[getDatas] ❌ Error retrieving GitHub user data of ${USERNAME}`);
 			const userData = await userResponse.json();
 
 			user.nickname = userData.name || userData.login[0].toUpperCase() + userData.login.slice(1);
@@ -42,9 +42,14 @@
 			user.blog = userData.blog;
 			user.company = userData.company;
 
-			// Appel public pour récupérer les repos
+			console.log(
+				`[getDatas] ✅ The user data of ${user.nickname || USERNAME} has been retrieved and transformed`,
+				user
+			);
+
 			const reposResponse = await fetch(`${BASE_URL}/users/${USERNAME}/repos?per_page=100`);
-			if (!reposResponse.ok) throw new Error('Error retrieving repositories');
+			if (!reposResponse.ok)
+				throw new Error(`[getDatas] ❌ Error retrieving GitHub repository data of ${USERNAME}`);
 			const reposData = await reposResponse.json();
 
 			repositories = reposData.filter(
@@ -64,9 +69,12 @@
 				}
 			);
 
-			console.log(repositories);
+			console.log(
+				`[getDatas] ✅ The repositories of ${user.nickname || USERNAME} have been retrieved`,
+				repositories
+			);
 		} catch (error) {
-			console.error('Error retrieving GitHub data:', error);
+			console.error(`[getDatas] ❌ Error retrieving GitHub data of ${USERNAME}`, error);
 		}
 	});
 </script>

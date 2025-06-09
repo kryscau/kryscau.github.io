@@ -35,18 +35,20 @@
 		%sveltekit.head%
 	</head>
 	<body class="bg-gh-bg text-gh-text min-h-screen" data-sveltekit-preload-data="hover">
-		<noscript>
+		<noscript class="no-js">
 			<div class="noscript-message">
-				<h1>Oups!</h1>
+				<h1>Oups! JavaScript is disabled</h1>
 				<p>
-					This application requires JavaScript to be enabled. Please enable JavaScript in your
-					browser settings and refresh the page. <br />
+					This application needs JavaScript to function properly. <br />
+					Please enable it in your browser settings and reload the page.
+					<br />
 					<a href="https://www.enable-javascript.com/" target="_blank" rel="noopener noreferrer">
 						How to enable JavaScript?
 					</a>
 				</p>
 			</div>
 		</noscript>
-		<div style="display: contents">%sveltekit.body%</div>
+		<div class="with-js" style="display: none">%sveltekit.body%</div>
+		<script src="%sveltekit.assets%/assets/js/if.js"></script>
 	</body>
 </html>

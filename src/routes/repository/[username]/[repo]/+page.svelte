@@ -41,18 +41,33 @@
 
 		try {
 			const repoRes = await fetch(`${PUBLIC_GITHUB_API_URL}/repos/${username}/${repo}`);
-			if (!repoRes.ok) throw new Error('Unable to retrieve info from repo');
+			if (!repoRes.ok)
+				throw new Error(`[getRepos] ❌ Unable to retrieve info from repo ${username}/${repo}`);
 			const repoData = await repoRes.json();
+			console.log(
+				`[getRepos] ✅ The repo data of ${username}/${repo} has been retrieved`,
+				repoData
+			);
 
 			const langRes = await fetch(`${PUBLIC_GITHUB_API_URL}/repos/${username}/${repo}/languages`);
-			if (!langRes.ok) throw new Error('Unable to retrieve languages');
+			if (!langRes.ok)
+				throw new Error(`[getRepos] ❌ Unable to retrieve languages of ${username}/${repo}`);
 			const languagesData = await langRes.json();
+			console.log(
+				`[getRepos] ✅ The languages data of ${username}/${repo} has been retrieved`,
+				languagesData
+			);
 
 			const contRes = await fetch(
 				`${PUBLIC_GITHUB_API_URL}/repos/${username}/${repo}/contributors`
 			);
-			if (!contRes.ok) throw new Error('Unable to retrieve contributors');
+			if (!contRes.ok)
+				throw new Error(`[getRepos] ❌ Unable to retrieve contributors of ${username}/${repo}`);
 			const contributorsData = await contRes.json();
+			console.log(
+				`[getRepos] ✅ The contributors data of ${username}/${repo} has been retrieved`,
+				contributorsData
+			);
 
 			// Calcul pourcentages langages
 			const total = Object.values(languagesData).reduce((a, b) => a + b, 0);
@@ -108,17 +123,18 @@
 					<h1 class="gh-text text-2xl font-bold sm:text-3xl">
 						{dataRepo?.repository?.full_name}
 					</h1>
-					<span
-						class="gh-success mt-3 inline-block rounded-full border px-2 py-1 text-xs"
-						style="background-color: rgba(63, 185, 80, 0.2); border-color: rgba(63, 185, 80, 0.3)"
-					>
-						{dataRepo?.repository?.visibility?.toUpperCase()}
-					</span>
 					{#if dataRepo?.repository?.archived}
 						<span
 							class="mt-3 ml-2 inline-block rounded-full border bg-orange-700/25 px-2 py-1 text-xs text-orange-500"
 						>
-							ARCHIVED
+							{dataRepo?.repository?.visibility?.toUpperCase()} ARCHIVED
+						</span>
+					{:else}
+						<span
+							class="gh-success mt-3 inline-block rounded-full border px-2 py-1 text-xs"
+							style="background-color: rgba(63, 185, 80, 0.2); border-color: rgba(63, 185, 80, 0.3)"
+						>
+							{dataRepo?.repository?.visibility?.toUpperCase()}
 						</span>
 					{/if}
 				</div>

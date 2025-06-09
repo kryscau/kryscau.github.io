@@ -2,13 +2,13 @@
 	import { page } from '$app/state';
 </script>
 
-<div class="not-found">
-	<h1>{page.error.message}</h1>
+<div class="error">
+	<h1>{page.error?.message}</h1>
 	<a href="/" class="btn-home" aria-label="Retour à l'accueil">Back to homepage</a>
 </div>
 
 <style>
-	.not-found {
+	.error {
 		height: 80vh;
 		display: flex;
 		flex-direction: column;
@@ -19,17 +19,11 @@
 		padding: 1rem;
 	}
 
-	.not-found h1 {
+	.error h1 {
 		font-size: 6rem;
 		font-weight: 900;
 		margin-bottom: 1rem;
 		color: var(--gh-accent, #ff4500);
-	}
-
-	.not-found p {
-		font-size: 1.5rem;
-		margin-bottom: 2rem;
-		color: var(--gh-text-secondary, #666);
 	}
 
 	.btn-home {
@@ -43,7 +37,6 @@
 		transition: background-color 0.3s ease;
 		text-decoration: none;
 	}
-
 	.btn-home:hover {
 		background-color: var(--gh-accent, #ff4500);
 	}
