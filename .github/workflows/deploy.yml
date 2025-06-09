@@ -13,12 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v3
-      #   with:
-      #     version: 8
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
@@ -28,14 +22,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: build
+      - name: Build SvelteKit
         env:
           PUBLIC_GITHUB_API_URL: 'https://api.github.com'
           PUBLIC_GITHUB_USERNAME: ${{ github.repository_owner }}
+          # ➕ ajoute ici le BASE_PATH si besoin (ex : '/mon-repo')
+          BASE_PATH: ''
         run: |
+          echo "PUBLIC_GITHUB_API_URL=https://api.github.com" >> .env
+          echo "PUBLIC_GITHUB_USERNAME=${{ github.repository_owner }}" >> .env
+          echo "BASE_PATH=${BASE_PATH}" >> .env
           npm run build
 
-      - name: Upload Artifacts
+      - name: Upload build folder
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'build/'
@@ -53,6 +52,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
